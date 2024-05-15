@@ -30,6 +30,9 @@ const (
 	RemovePkgsPB  = "remove-pkgs.yml"
 	PreCheckPB    = "precheck.yml"
 	RenewCertsPB  = "renew-certs.yml"
+
+	ACoreOSMaster = "linux-acoreos-master.yml"
+	ACoreOSNode   = "linux-acoreos-node.yml"
 )
 
 //go:embed entrypoint.sh.template
@@ -56,7 +59,7 @@ func NewActions() *Actions {
 	actions.Playbooks.List = []string{
 		ResetPB, ScalePB, ClusterPB, RemoveNodePB, UpgradeClusterPB,
 		PingPB, RepoPB, FirewallPB, KubeconfigPB, ClusterInfoPB, UpdateHostsPB,
-		RemovePkgsPB, PreCheckPB, RenewCertsPB,
+		RemovePkgsPB, PreCheckPB, RenewCertsPB, ACoreOSNode, ACoreOSMaster,
 	}
 	actions.Playbooks.Dict = map[string]void{}
 	for _, pbItem := range actions.Playbooks.List {

@@ -16,11 +16,11 @@ on:
           - test
           - uat
 env:
-  IMAGE_NAME: lsy-public/spray-job
+  IMAGE_NAME: lsy-public/kubean-operator
 
 jobs:
   build:
-    if: contains(github.event.commits[0].message,'build-ci')
+    if: contains(github.event.commits[0].message,'kubean-build-ci')
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.set_info.outputs.image_tag }}
@@ -48,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: build/images/spray-job/Dockerfile
+          file: build/images/kubean-operator/Dockerfile
           push: true
           build-args: SPRAY_TAG=v0.2.1
           tags: ${{ steps.meta.outputs.tags }}
@@ -63,7 +63,7 @@ jobs:
   deploy:
     needs:
       - build
-    if: contains(github.event.commits[0].message,'build-ci-cd')
+    if: contains(github.event.commits[0].message,'kubean-build-ci-cd')
     runs-on: ubuntu-latest
     steps:
       - name: this is deploy job
