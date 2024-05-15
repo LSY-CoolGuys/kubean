@@ -50,6 +50,7 @@ jobs:
           context: .
           file: build/images/spray-job/Dockerfile
           push: true
+          build-args: SPRAY_TAG=v0.2.1
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           #       需要编译arm64 和 amd64的

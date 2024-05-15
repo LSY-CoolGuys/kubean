@@ -1,4 +1,4 @@
-ARG SPRAY_TAG=master
+ARG SPRAY_TAG=v0.2.1
 ARG REPO=kubean-io
 FROM ghcr.m.daocloud.io/${REPO}/spray-job:${SPRAY_TAG}
 
