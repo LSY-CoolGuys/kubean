@@ -7,7 +7,8 @@
   tasks:
     - name: Install ACoreOs Node
       shell: |
-        echo "- HostName: {{ host }}"
+        #echo "- HostName: {{ host }}"
+        hostname
         echo "- Master: {{ master_addr }}"
         echo "1. Check docker exist"
         which docker > /dev/null
