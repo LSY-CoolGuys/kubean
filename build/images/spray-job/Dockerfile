@@ -5,3 +5,4 @@ FROM ghcr.m.daocloud.io/${REPO}/spray-job:${SPRAY_TAG}
 WORKDIR /kubespray
 
 COPY playbooks/ /kubespray/
+COPY main.yml /kubespray/roles/kubernetes/preinstall/handlers/main.yml
