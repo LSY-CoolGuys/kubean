@@ -7,7 +7,6 @@
   tasks:
     - name: Install ACoreOs Node
       shell: |
-        #echo "- HostName: {{ host }}"
         hostname
         echo "- Master: {{ master_addr }}"
         echo "1. Check docker exist"
@@ -38,7 +37,7 @@
                 docker rm -f cos-worknode > /dev/null
                 docker rm -f cos-dashboard > /dev/null
         fi
-        docker run -itd --restart=always --network=host --privileged=true --name cos-worknode -v /run/containerd/containerd.sock:/containerd/containerd.sock -v /run/flannel:/flannel -v /proxy-root:/proxy-root -v /etc/machine-id:/etc/machine-id cos-worknode:latest --api-servers={{ master_addr }} --hostname-override={{ host }} --enable-pod-ipam=1 --container-runtime-endpoint=unix:///containerd/containerd.sock --node-status-update-frequency=290 --sync-frequency=30000 > /dev/null
+        docker run -itd --restart=always --network=host --privileged=true --name cos-worknode -v /run/containerd/containerd.sock:/containerd/containerd.sock -v /run/flannel:/flannel -v /proxy-root:/proxy-root -v /etc/machine-id:/etc/machine-id cos-worknode:latest --api-servers={{ master_addr }} --hostname-override=node1 --enable-pod-ipam=1 --container-runtime-endpoint=unix:///containerd/containerd.sock --node-status-update-frequency=290 --sync-frequency=30000 > /dev/null
         if [ $? -ne 0 ]; then
                 echo "Run cos-worknode failed"
                 exit
