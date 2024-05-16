@@ -22,10 +22,12 @@
                 echo "Run cos-worknode failed"
                 exit
         fi
-        echo "Run K3S Node success"
+        echo "Run K3S Master success"
         sleep 25
+        mkdir -p ~/.kube
         docker cp k3s:/output/kubeconfig ~/.kube/config
         docker cp k3s:/var/lib/rancher/k3s/server/token ~/.kube/node-token
+        sed -i '#127.0.0.1#{{master_host}}#' ~/.kube/config
         kubectl get no
       args:
         executable: /bin/bash
