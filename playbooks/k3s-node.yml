@@ -7,8 +7,8 @@
   tasks:
     - name: Install K3S Node
       shell: |
-        hostname
-        echo "- HostName: {{ ansible_hostname }}"
+        hostName=`hostname`
+        echo "- HostName: $hostName"
         echo "- Master: {{ master_host }}:{{ master_port }}"
         TOKEN=`cat ~/.kube/node-token`
         echo "K3s token is : $TOKEN"

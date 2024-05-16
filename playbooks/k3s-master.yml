@@ -7,8 +7,8 @@
   tasks:
     - name: Install K3S Master
       shell: |
-        hostname
-        echo "- HostName: {{ ansible_hostname }}"
+        hostName=`hostname`
+        echo "- HostName: $hostName"
         echo "- Master: {{ master_host }}:{{ master_port }}"
         echo "1. Check docker exist"
         which docker > /dev/null
