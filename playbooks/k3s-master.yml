@@ -17,7 +17,7 @@
             exit
         fi
         echo "2. Install K3S Master"
-        docker run -itd --restart=always --network=host -p 6443:6443 --privileged=true --name k3s -e K3S_KUBECONFIG_OUTPUT=/output/kubeconfig rancher/k3s:latest server --node-ip {{master_host}} --node-external-ip {{master_host}} > /dev/null
+        docker run -itd --restart=always -p 6443:6443 --privileged=true --name k3s -e K3S_KUBECONFIG_OUTPUT=/output/kubeconfig rancher/k3s:latest server --node-ip {{master_host}} --node-external-ip {{master_host}} > /dev/null
         if [ $? -ne 0 ]; then
                 echo "Run cos-worknode failed"
                 exit
@@ -27,7 +27,7 @@
         mkdir -p ~/.kube
         docker cp k3s:/output/kubeconfig ~/.kube/config
         docker cp k3s:/var/lib/rancher/k3s/server/token ~/.kube/node-token
-        sed -i '#127.0.0.1#{{master_host}}#' ~/.kube/config
+        #sed -i 's#127.0.0.1#{{master_host}}#g' ~/.kube/config
         kubectl get no
       args:
         executable: /bin/bash
