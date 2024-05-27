@@ -37,7 +37,9 @@ const (
 	K3SMaster = "k3s-master.yml"
 	K3SNode   = "k3s-node.yml"
 
-	ACoreOSKubeconfig = "acoreos-kubeconfig.yml"
+	ACoreOSKubeconfig  = "acoreos-kubeconfig.yml"
+	ResetACoreOSMaster = "reset-linux-acoreos-master.yml"
+	ResetACoreOSNode   = "reset-linux-acoreos-node.yml"
 )
 
 //go:embed entrypoint.sh.template
@@ -64,7 +66,7 @@ func NewActions() *Actions {
 	actions.Playbooks.List = []string{
 		ResetPB, ScalePB, ClusterPB, RemoveNodePB, UpgradeClusterPB,
 		PingPB, RepoPB, FirewallPB, KubeconfigPB, ClusterInfoPB, UpdateHostsPB,
-		RemovePkgsPB, PreCheckPB, RenewCertsPB, ACoreOSNode, ACoreOSMaster, K3SMaster, K3SNode, ACoreOSKubeconfig,
+		RemovePkgsPB, PreCheckPB, RenewCertsPB, ACoreOSNode, ACoreOSMaster, K3SMaster, K3SNode, ACoreOSKubeconfig, ResetACoreOSNode, ResetACoreOSMaster,
 	}
 	actions.Playbooks.Dict = map[string]void{}
 	for _, pbItem := range actions.Playbooks.List {
