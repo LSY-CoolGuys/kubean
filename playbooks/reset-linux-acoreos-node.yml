@@ -1,11 +1,11 @@
 ---
-- name: Uninstall ACoreOs Master
-  hosts: acoreos_control_plane
+- name: Uninstall ACoreOs Node
+  hosts: acoreos_node
   gather_facts: false
   become: true
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   tasks:
-    - name: Uninstall ACoreOs Master
+    - name: Uninstall ACoreOs Node
       shell: |
         echo "1. Stop and remove containers"
         echo "Stop and remove cos-worknode"
