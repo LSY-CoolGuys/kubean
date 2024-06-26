@@ -42,7 +42,7 @@
                 docker rm -f cos-worknode > /dev/null
                 docker rm -f cos-dashboard > /dev/null
         fi
-        docker run -itd --restart=always --network=host --privileged=true --name cos-worknode -v /run/containerd/containerd.sock:/containerd/containerd.sock -v /run/flannel:/flannel -v /proxy-root:/proxy-root -v /etc/machine-id:/etc/machine-id {{ registry_host }}/acoreos/cos-worknode:latest --api-servers={{master_host}}:{{master_host}} --hostname-override=$NODE_NAME --enable-pod-ipam=1 --container-runtime-endpoint=unix:///containerd/containerd.sock --node-status-update-frequency=290 --sync-frequency=30000 > /dev/null
+        docker run -itd --restart=always --network=host --privileged=true --name cos-worknode -v /run/containerd/containerd.sock:/containerd/containerd.sock -v /run/flannel:/flannel -v /proxy-root:/proxy-root -v /etc/machine-id:/etc/machine-id {{ registry_host }}/acoreos/cos-worknode:latest --api-servers={{master_host}}:{{master_port}} --hostname-override=$NODE_NAME --enable-pod-ipam=1 --container-runtime-endpoint=unix:///containerd/containerd.sock --node-status-update-frequency=290 --sync-frequency=30000 > /dev/null
         if [ $? -ne 0 ]; then
                 echo "Run cos-worknode failed"
                 exit

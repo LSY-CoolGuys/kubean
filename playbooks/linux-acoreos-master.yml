@@ -6,6 +6,8 @@
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   tasks:
     - name: Install ACoreOs Master
+      debug:
+        msg: "The IP address of this machine is {{ ansible_default_ipv4.address }}"
       shell: |
         NODE_NAME=`hostname`
         ARCH=`uname -m` # aarch64、x86_64
@@ -18,8 +20,8 @@
         fi
         echo "2. Install tools"
         mkdir -p /usr/local/bin/
-        wget {{ minio_address }}/acoreos/$ARCH/tools.tar
-        wget {{ minio_address }}/acoreos/$ARCH/cni.tar
+        wget {{ minio_address }}/acoreos/$ARCH/tools.tar -O tools.tar
+        wget {{ minio_address }}/acoreos/$ARCH/cni.tar -O cni.tar
         tar -xf tools.tar
         cp tools/* /usr/local/bin/
         tar xf cni.tar -C /
@@ -27,8 +29,8 @@
         docker pull {{ registry_host }}/acoreos/cos-master:latest
         docker pull {{ registry_host }}/acoreos/cos-worknode:latest
         docker pull {{ registry_host }}/acoreos/cos-dashboard:latest
-        wget {{ minio_address }}/acoreos/$ARCH/pause.tar
-        wget {{ minio_address }}/acoreos/$ARCH/busybox.tar
+        wget {{ minio_address }}/acoreos/$ARCH/pause.tar -O pause.tar
+        wget {{ minio_address }}/acoreos/$ARCH/busybox.tar -O busybox.tar
         ctr -n k8s.io i import pause.tar
         ctr -n k8s.io i import busybox.tar
         echo "4. Generate configs"
@@ -36,7 +38,7 @@
         kubectl config set-context acorecloudos
         kubectl config set contexts.acorecloudos.cluster cos
         kubectl config use-context acorecloudos
-        wget {{ minio_address }}/acoreos/config.tar
+        wget {{ minio_address }}/acoreos/config.tar -O config.tar
         tar -xf config.tar
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/config.toml > /etc/containerd/config.toml
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/daemon.json > /etc/docker/daemon.json
@@ -49,20 +51,20 @@
                 docker rm -f cos-worknode > /dev/null
                 docker rm -f cos-dashboard > /dev/null
         fi
-        docker run -d --restart=always --network=host --name cos-master {{ registry_host }}/acoreos/cos-master:latest --address=0.0.0.0:8080 --node-monitor-period 300 --node-startup-grace-period 5000 --node-monitor-grace-period 600 --pod-eviction-timeout 100 > /dev/null
+        docker run -d --restart=always --network=host --name cos-master {{ registry_host }}/acoreos/cos-master:latest --address={{ ansible_default_ipv4.address }}:8080 --node-monitor-period 300 --node-startup-grace-period 5000 --node-monitor-grace-period 600 --pod-eviction-timeout 100 --kcp=1 --discovery-addrs 255.1.2.3:9200 > /dev/null
         if [ $? -ne 0 ]; then
                 echo "Run cos-master failed"
                 exit
         fi
         echo "Run cos-master success"
-        docker run -itd --restart=always --network=host --privileged=true --name cos-worknode -v /run/containerd/containerd.sock:/containerd/containerd.sock -v /run/flannel:/flannel -v /proxy-root:/proxy-root -v /etc/machine-id:/etc/machine-id {{ registry_host }}/acoreos/cos-worknode:latest --api-servers={{master_host}}:{{master_host}} --hostname-override=$NODE_NAME --enable-pod-ipam=1 --container-runtime-endpoint=unix:///containerd/containerd.sock --node-status-update-frequency=290 --sync-frequency=30000 > /dev/null
+        docker run -itd --restart=always --network=host --privileged=true --name cos-worknode -v /run/containerd/containerd.sock:/containerd/containerd.sock -v /run/flannel:/flannel -v /proxy-root:/proxy-root -v /etc/machine-id:/etc/machine-id {{ registry_host }}/acoreos/cos-worknode:latest --api-servers={{master_host}}:{{master_port}} --hostname-override=$NODE_NAME --enable-pod-ipam=1 --container-runtime-endpoint=unix:///containerd/containerd.sock --node-status-update-frequency=290 --sync-frequency=30000 > /dev/null
         #--node-ips=$LOCAL_IPS --nic-names=$LOCAL_NIC_NAMES 
         if [ $? -ne 0 ]; then
                 echo "Run cos-worknode failed"
                 exit
         fi
         echo "Run cos-worknode success"
-        docker run -d --restart=always --network=host --name cos-dashboard -e SERVER_HOST={{master_host}}:{{master_host}} {{ registry_host }}/acoreos/cos-dashboard:latest > /dev/null
+        docker run -d --restart=always --network=host --name cos-dashboard -e SERVER_HOST={{master_host}}:{{master_port}} {{ registry_host }}/acoreos/cos-dashboard:latest > /dev/null
         if [ $? -ne 0 ]; then
                 echo "Run cos-dashboard failed"
                 exit
