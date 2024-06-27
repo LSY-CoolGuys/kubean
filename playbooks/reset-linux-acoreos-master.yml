@@ -22,6 +22,7 @@
         rm -f /usr/local/bin/crictl
         rm -rf /opt/cni
         rm -rf ~/.kube
+        rm -rf ./configs
         rm -f tools.tar cni.tar pause.tar busybox.tar config.tar
       args:
         executable: /bin/bash

@@ -6,9 +6,8 @@
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   tasks:
     - name: Install ACoreOs Master
-      debug:
-        msg: "The IP address of this machine is {{ ansible_default_ipv4.address }}"
       shell: |
+        echo "The IP address of this machine is {{ ansible_default_ipv4.address }}"
         NODE_NAME=`hostname`
         ARCH=`uname -m` # aarch64、x86_64
         # Check Docker
@@ -38,8 +37,8 @@
         kubectl config set-context acorecloudos
         kubectl config set contexts.acorecloudos.cluster cos
         kubectl config use-context acorecloudos
-        wget {{ minio_address }}/acoreos/config.tar -O config.tar
-        tar -xf config.tar
+        wget {{ minio_address }}/acoreos/$ARCH/configs.tar -O configs.tar
+        tar -xf configs.tar
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/config.toml > /etc/containerd/config.toml
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/daemon.json > /etc/docker/daemon.json
         cp configs/crictl.yaml /etc/crictl.yaml
