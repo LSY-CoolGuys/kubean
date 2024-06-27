@@ -20,16 +20,16 @@
                 exit
         fi
         echo "2. Install tools"
-        wget {{ minio_address }}/acoreos/$ARCH/cni.tar
+        wget {{ minio_address }}/acoreos/$ARCH/cni.tar -O cni.tar
         tar xf cni.tar -C /
         echo "3. Load images"
         docker pull {{ registry_host }}/acoreos/cos-worknode:latest
-        wget {{ minio_address }}/acoreos/$ARCH/pause.tar
-        wget {{ minio_address }}/acoreos/$ARCH/busybox.tar
+        wget {{ minio_address }}/acoreos/$ARCH/pause.tar -O pause.tar
+        wget {{ minio_address }}/acoreos/$ARCH/busybox.tar -O busybox.tar
         ctr -n k8s.io i import pause.tar
         ctr -n k8s.io i import busybox.tar
         echo "4. Generate configs"
-        wget {{ minio_address }}/acoreos/config.tar
+        wget {{ minio_address }}/acoreos/$ARCH/config.tar -O config.tar
         tar -xf config.tar
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/config.toml > /etc/containerd/config.toml
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/daemon.json > /etc/docker/daemon.json

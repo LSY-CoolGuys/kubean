@@ -17,11 +17,12 @@
         echo "2. Remove images"
         docker rmi $(docker images | grep cos | awk '{print $1":"$2}')
         echo "3. Remove tools&configs"
-        rm /usr/local/bin/kubectl
-        rm /usr/local/bin/ctr
-        rm /usr/local/bin/crictl
+        rm -f /usr/local/bin/kubectl
+        rm -f /usr/local/bin/ctr
+        rm -f /usr/local/bin/crictl
         rm -rf /opt/cni
         rm -rf ~/.kube
+        rm -f tools.tar cni.tar pause.tar busybox.tar config.tar
       args:
         executable: /bin/bash
       register: clusterinfo

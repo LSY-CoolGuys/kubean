@@ -51,7 +51,7 @@
                 docker rm -f cos-worknode > /dev/null
                 docker rm -f cos-dashboard > /dev/null
         fi
-        docker run -d --restart=always --network=host --name cos-master {{ registry_host }}/acoreos/cos-master:latest --address={{ ansible_default_ipv4.address }}:8080 --node-monitor-period 300 --node-startup-grace-period 5000 --node-monitor-grace-period 600 --pod-eviction-timeout 100 --kcp=1 --discovery-addrs 255.1.2.3:9200 > /dev/null
+        docker run -d --restart=always --network=host --name cos-master {{ registry_host }}/acoreos/cos-master:latest --address={{ ansible_default_ipv4.address }}:8080 --node-monitor-period 300 --node-startup-grace-period 5000 --node-monitor-grace-period 600 --pod-eviction-timeout 100 --kcp=1 --discovery-addr {{discovery_addr}} > /dev/null
         if [ $? -ne 0 ]; then
                 echo "Run cos-master failed"
                 exit

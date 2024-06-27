@@ -15,6 +15,7 @@
         echo "3. Remove tools&configs"
         rm -rf /opt/cni
         rm -rf ~/.kube
+        rm -f cni.tar pause.tar busybox.tar config.tar
       args:
         executable: /bin/bash
       register: clusterinfo
