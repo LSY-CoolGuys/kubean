@@ -5,6 +5,9 @@
   become: true
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   tasks:
+    - name: Print IP Info
+      debug:
+        msg: "The IP address of this machine is {{ ansible_default_ipv4.address }}"
     - name: Uninstall ACoreOs Master
       shell: |
         echo "1. Stop and remove containers"

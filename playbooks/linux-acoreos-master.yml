@@ -5,6 +5,9 @@
   become: true
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   tasks:
+    - name: Print Info
+      debug:
+        msg: "The IP address of this machine is {{ ansible_default_ipv4.address }},and discovery-addr is {{discovery_addr}}"
     - name: Install ACoreOs Master
       shell: |
         echo "The IP address of this machine is {{ ansible_default_ipv4.address }}"
