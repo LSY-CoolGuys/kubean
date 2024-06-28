@@ -52,7 +52,7 @@
         fi
         echo "Run cos-worknode success"
         echo "Clean tar"
-        rm -rf cni.tar pause.tar busybox.tar configs.tar config
+        rm -rf cni.tar pause.tar busybox.tar configs.tar configs
       args:
         executable: /bin/bash
       register: clusterinfo

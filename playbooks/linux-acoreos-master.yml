@@ -73,7 +73,7 @@
         fi
         echo "Run cos-dashboard success"
         echo "Clean tar"
-        rm -rf tools.tar cni.tar pause.tar busybox.tar config.tar tools config
+        rm -rf tools.tar cni.tar pause.tar busybox.tar config.tar tools configs
       args:
         executable: /bin/bash
       register: clusterinfo
