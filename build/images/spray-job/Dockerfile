@@ -18,6 +18,7 @@ COPY build/images/spray-job/main.yml /kubespray/roles/kubernetes/preinstall/hand
   #
 #4、关闭ntp，修改ntp_enabled=false
 # 适配acore-linux安装k8s
+COPY playbooks/acore-linux/reset-main.yml /kubespray/roles/reset/tasks/main.yml
 COPY playbooks/acore-linux/runc-main.yml /kubesprayroles/container-engine/runc/tasks/main.yml
 COPY playbooks/acore-linux/bootstrap-centos.yml  /kubespray/roles/bootstrap-os/tasks/bootstrap-centos.yml
 COPY playbooks/acore-linux/0010-swapoff.yml /kubespray/roles/kubernetes/preinstall/tasks/0010-swapoff.yml
