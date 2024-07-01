@@ -1,6 +1,6 @@
 FROM alpine:3.17 as spray-build
 
-ARG SPRAY_REF=master
+ARG SPRAY_REF=631
 
 ARG TZ=Etc/UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
