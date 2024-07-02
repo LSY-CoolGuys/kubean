@@ -7,3 +7,11 @@
   tasks:
     - name: Check the network reachability of each node
       ansible.builtin.ping:
+    - name: Echo Node Info
+      debug:
+        msg: "The IP address of this machine is {{ ansible_default_ipv4.address }},and ansible_host is {{ansible_host}}"
+    - name: Init Acore Linux Env
+      shell: |
+        wget -qO- {{ minio_address }}/kubean/public/init-acore-linux.sh | sh
+      when:
+        - arch == "ft"
