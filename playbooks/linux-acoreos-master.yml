@@ -1,7 +1,7 @@
 ---
 - name: Install ACoreOs Master
   hosts: acoreos_control_plane
-  gather_facts: false
+  gather_facts: true
   become: true
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   tasks:
