@@ -25,19 +25,22 @@
         echo "2. Install tools"
         wget {{ minio_address }}/acoreos/$ARCH/cni.tar -O cni.tar
         tar xf cni.tar -C /
-        echo "3. Load images"
-        docker pull {{ registry_host }}/acoreos/cos-worknode:latest
-        wget {{ minio_address }}/acoreos/$ARCH/pause.tar -O pause.tar
-        wget {{ minio_address }}/acoreos/$ARCH/busybox.tar -O busybox.tar
-        ctr -n k8s.io i import pause.tar
-        ctr -n k8s.io i import busybox.tar
-        echo "4. Generate configs"
         wget {{ minio_address }}/acoreos/$ARCH/configs.tar -O configs.tar
         tar -xf configs.tar
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/config.toml > /etc/containerd/config.toml
         sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/daemon.json > /etc/docker/daemon.json
         cp configs/crictl.yaml /etc/crictl.yaml
-        echo "5. Run containers"
+        echo "3. Load images"
+        systemctl restart docker
+        docker pull {{ registry_host }}/acoreos/cos-worknode:latest
+        wget {{ minio_address }}/acoreos/$ARCH/images/pause.tar -O pause.tar
+        wget {{ minio_address }}/acoreos/$ARCH/images/busybox.tar -O busybox.tar
+        wget {{ minio_address }}/acoreos/$ARCH/tools/ctr -O ctr
+        mv ./ctr /usr/local/bin/ctr
+        chmod +x /usr/local/bin/ctr
+        ctr -n k8s.io i import pause.tar
+        ctr -n k8s.io i import busybox.tar
+        echo "4. Run containers"
         docker ps | grep cos- > /dev/null
         if [ $? -eq 0 ]; then	
                 echo "Stop and remove running containers"

@@ -16,6 +16,7 @@
         echo "2. Remove images"
         docker rmi $(docker images | grep cos | awk '{print $1":"$2}')
         echo "3. Remove tools&configs"
+        rm -rf /usr/local/bin/ctr
         rm -rf /opt/cni
         rm -rf ~/.kube
         rm -f cni.tar pause.tar busybox.tar config.tar
