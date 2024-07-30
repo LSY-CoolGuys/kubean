@@ -10,7 +10,7 @@
   tasks:
     - name: Print IP Info
       debug:
-        msg: "The IP address of this machine is {{ ansible_default_ipv4.address }}"
+        msg: "[Debug]The IP address of this machine is {{ ansible_default_ipv4.address }}"
     - name: Install ACoreOs Node
       shell: |
         NODE_NAME=`hostname`
