@@ -30,8 +30,8 @@
         tar xf cni.tar -C /
         wget {{ minio_address }}/acoreos/$ARCH/configs.tar -O configs.tar
         tar -xf configs.tar
-        sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/config.toml > /etc/containerd/config.toml
-        sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/daemon.json > /etc/docker/daemon.json
+        # sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/config.toml > /etc/containerd/config.toml
+        # sed -e "s/REGISTRY_ADDR/{{ registry_host }}/g" configs/daemon.json > /etc/docker/daemon.json
         cp configs/crictl.yaml /etc/crictl.yaml
         echo "3. Load images"
         systemctl restart docker
